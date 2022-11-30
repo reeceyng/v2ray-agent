@@ -33,10 +33,10 @@
 - 2.vpsA解锁时需输入域名，域名需设置IPv6，这个域名可以是搭建IPv6机器的域名
 - 3.vpsA按照【3.解锁步骤】搭建出站，出站写上面解析的域名，vpsB搭建入站时ip写vpsA的IPv6 ip
 - 4.修改vpsA 【10_ipv4_outbounds.json】文件中tag为streamingMedia-443、streamingMedia-80下的domainStrategy为【UseIPv6】
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/netflix_vpsA_10_ipv4_outbounds.png" width=700>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/netflix_vpsA_10_ipv4_outbounds.png" width=700>
  
 - 5.修改vpsB【09_routing.json】有source的那一组的outboundTag为【IPv6-out】
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/netflix_vpsB_09_routing.png" width=700>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/netflix_vpsB_09_routing.png" width=700>
 
 - 6.重启vpsA、vpsB中的核心
 

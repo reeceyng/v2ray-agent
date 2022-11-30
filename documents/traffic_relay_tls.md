@@ -23,11 +23,11 @@
 >示例图
 - 添加转发服务示例图
 
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/wikihost/wikihost_tcp_setting.png" width=400>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/wikihost/wikihost_tcp_setting.png" width=400>
 
 - 添加完成后示例图
 
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/wikihost/wikihost_rules.png" width=700>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/wikihost/wikihost_rules.png" width=700>
 
 # 4.修改客户端
 - 思路和CDN手动自选ip一样
@@ -42,25 +42,25 @@
 - 1.参考下图
 - 2.address、端口部分填写wikihost分配的ip和端口，host部分填写科学上网的域名
 - 3.tls servername 同样填写科学上网的域名
-<img src='https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 v2rayU.png' width=400/>
+<img src='https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 v2rayU.png' width=400/>
 
 ### 2.Quantumult
 - 1.参考下图
 - 2.地址、端口部分填写wikihost分配的ip和端口
 - 3.Host部分填写科学上网的域名
 - 4.请求头-->Host部分填写科学上网的域名
-<img src='https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 Quantumult01.png' width=400/>
-<img src='https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 Quantumult02.png' width=400/>
+<img src='https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 Quantumult01.png' width=400/>
+<img src='https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 Quantumult02.png' width=400/>
 
 ### 3.ShadowRocket
 - 1.参考下图
 - 2.地址、端口部分填写wikihost分配的ip和端口
 - 3.注意混淆部分->Host部分填写科学上网的域名
-<img src='https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 ShadowRocket01.png' width=400/>
-<img src='https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 ShadowRocket02.png' width=400/>
+<img src='https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 ShadowRocket01.png' width=400/>
+<img src='https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 ShadowRocket02.png' width=400/>
 
 ### 4.v2rayN
 - 1.参考下图
 - 2.地址、端口部分填写wikihost分配的ip和端口
 - 3.注意伪装域名部分填写科学上网的域名
-<img src='https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 v2rayN.png' width=400/>
+<img src='https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/CloudFlare自选ip 手动更改 v2rayN.png' width=400/>

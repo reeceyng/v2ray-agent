@@ -1222,7 +1222,7 @@ acmeInstallSSL() {
 		txtValue=$(tail -n 10 /etc/v2ray-agent/tls/acme.log | grep "TXT value" | awk -F "'" '{print $2}')
 		if [[ -n "${txtValue}" ]]; then
 			echoContent green " ---> Please manually add DNS TXT record"
-			echoContent yellow " ---> Please refer to this tutorial for adding methods, https://github.com/mack-a/v2ray-agent/blob/master/documents/dns_txt.md"
+			echoContent yellow " ---> Please refer to this tutorial for adding methods, https://github.com/reeceyng/v2ray-agent/blob/master/documents/dns_txt.md"
 			echoContent green " --->  name：_acme-challenge"
 			echoContent green " --->  value：${txtValue}"
 			echoContent yellow " ---> Please wait for 1-2 minutes after the addition is complete"
@@ -1420,7 +1420,7 @@ nginxBlog() {
 		if [[ "${nginxBlogInstallStatus}" == "y" ]]; then
 			rm -rf /usr/share/nginx/html
 			randomNum=$((RANDOM % 6 + 1))
-			wget -q -P /usr/share/nginx https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/blog/unable/html${randomNum}.zip >/dev/null
+			wget -q -P /usr/share/nginx https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/blog/unable/html${randomNum}.zip >/dev/null
 			unzip -o /usr/share/nginx/html${randomNum}.zip -d /usr/share/nginx/html >/dev/null
 			rm -f /usr/share/nginx/html${randomNum}.zip*
 			echoContent green " ---> Add fake site successfully"
@@ -1428,7 +1428,7 @@ nginxBlog() {
 	else
 		randomNum=$((RANDOM % 6 + 1))
 		rm -rf /usr/share/nginx/html
-		wget -q -P /usr/share/nginx https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/blog/unable/html${randomNum}.zip >/dev/null
+		wget -q -P /usr/share/nginx https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/blog/unable/html${randomNum}.zip >/dev/null
 		unzip -o /usr/share/nginx/html${randomNum}.zip -d /usr/share/nginx/html >/dev/null
 		rm -f /usr/share/nginx/html${randomNum}.zip*
 		echoContent green " ---> Add fake site successfully"
@@ -1629,13 +1629,13 @@ installHysteria() {
 
 	if [[ -z "${hysteriaConfigPath}" ]]; then
 
-		version=$(curl -s https://api.github.com/repos/apernet/hysteria/hysteria/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | head -1)
+		version=$(curl -s https://api.github.com/repos/apernet/hysteria/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | head -1)
 
 		echoContent green " ---> Hysteria version: ${version}"
 		if wget --help | grep -q show-progress; then
-			wget -c -q --show-progress -P /etc/v2ray-agent/hysteria/ "https://github.com/apernet/hysteria/hysteria/releases/download/${version}/${hysteriaCoreCPUVendor}"
+			wget -c -q --show-progress -P /etc/v2ray-agent/hysteria/ "https://github.com/apernet/hysteria/releases/download/${version}/${hysteriaCoreCPUVendor}"
 		else
-			wget -c -P /etc/v2ray-agent/hysteria/ "https://github.com/apernet/hysteria/hysteria/releases/download/${version}/${hysteriaCoreCPUVendor}" >/dev/null 2>&1
+			wget -c -P /etc/v2ray-agent/hysteria/ "https://github.com/apernet/hysteria/releases/download/${version}/${hysteriaCoreCPUVendor}" >/dev/null 2>&1
 		fi
 		mv "/etc/v2ray-agent/hysteria/${hysteriaCoreCPUVendor}" /etc/v2ray-agent/hysteria/hysteria
 		chmod 655 /etc/v2ray-agent/hysteria/hysteria
@@ -1972,7 +1972,7 @@ installHysteriaService() {
 		cat <<EOF >/etc/systemd/system/hysteria.service
     [Unit]
     Description=Hysteria Service
-    Documentation=https://github.com/apernet/hysteria/hysteria/wiki
+    Documentation=https://github.com/apernet/hysteria/wiki
     After=network.target nss-lookup.target
     Wants=network-online.target
 
@@ -3077,7 +3077,7 @@ customCDNIP() {
 	echoContent red "\n=============================================================="
 	echoContent yellow "# Notes"
 	echoContent yellow "\nTutorial address:"
-	echoContent skyBlue "https://github.com/mack-a/v2ray-agent/blob/master/documents/optimize_V2Ray.md"
+	echoContent skyBlue "https://github.com/reeceyng/v2ray-agent/blob/master/documents/optimize_V2Ray.md"
 	echoContent red "\nIf you don't know about Cloudflare optimization, please don't use"
 	echoContent yellow "\n 1.Mobile: 104.16.123.96"
 	echoContent yellow " 2.Unicom: www.cloudflare.com"
@@ -3528,9 +3528,9 @@ updateNginxBlog() {
 	if [[ "${selectInstallNginxBlogType}" =~ ^[1-9]$ ]]; then
 		rm -rf /usr/share/nginx/*
 		if wget --help | grep -q show-progress; then
-			wget -c -q --show-progress -P /usr/share/nginx "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/blog/unable/html${selectInstallNginxBlogType}.zip" >/dev/null
+			wget -c -q --show-progress -P /usr/share/nginx "https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/blog/unable/html${selectInstallNginxBlogType}.zip" >/dev/null
 		else
-			wget -c -P /usr/share/nginx "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/blog/unable/html${selectInstallNginxBlogType}.zip" >/dev/null
+			wget -c -P /usr/share/nginx "https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/blog/unable/html${selectInstallNginxBlogType}.zip" >/dev/null
 		fi
 
 		unzip -o "/usr/share/nginx/html${selectInstallNginxBlogType}.zip" -d /usr/share/nginx/html >/dev/null
@@ -3976,9 +3976,9 @@ updateV2RayAgent() {
 	echoContent skyBlue "\nProgress $1/${totalProgress} : Update v2ray-agent script"
 	rm -rf /etc/v2ray-agent/install.sh
 	if wget --help | grep -q show-progress; then
-		wget -c -q --show-progress -P /etc/v2ray-agent/ -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh"
+		wget -c -q --show-progress -P /etc/v2ray-agent/ -N --no-check-certificate "https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/install.sh"
 	else
-		wget -c -q -P /etc/v2ray-agent/ -N --no-check-certificate "https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh"
+		wget -c -q -P /etc/v2ray-agent/ -N --no-check-certificate "https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/install.sh"
 	fi
 
 	sudo chmod 700 /etc/v2ray-agent/install.sh
@@ -3989,7 +3989,7 @@ updateV2RayAgent() {
 	echoContent yellow " ---> Please manually execute [vasma] to open the script"
 	echoContent green " ---> Current version: ${version}\n"
 	echoContent yellow "If the update is unsuccessful, please manually execute the following command\n"
-	echoContent skyBlue "wget -P /root -N --no-check-certificate https://raw.githubusercontent.com/mack-a/v2ray-agent/master/install.sh && chmod 700 /root/install.sh && /root/install.sh"
+	echoContent skyBlue "wget -P /root -N --no-check-certificate https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/install.sh && chmod 700 /root/install.sh && /root/install.sh"
 	echo
 	exit 0
 }
@@ -4538,7 +4538,7 @@ dokodemoDoorUnblockStreamingMedia() {
 	echoContent skyBlue "\nFunction 1/${totalProgress} : Unlock streaming media with any door landing machine"
 	echoContent red "\n=============================================================="
 	echoContent yellow "# Notes"
-	echoContent yellow "Any door unlock details, please check this article [https://github.com/mack-a/v2ray-agent/blob/master/documents/netflix/dokodemo-unblock_netflix.md]\n"
+	echoContent yellow "Any door unlock details, please check this article [https://github.com/reeceyng/v2ray-agent/blob/master/documents/netflix/dokodemo-unblock_netflix.md]\n"
 
 	echoContent yellow "1.Add outbound"
 	echoContent yellow "2.Add inbound"
@@ -5432,17 +5432,13 @@ manageHysteria() {
 menu() {
 	cd "$HOME" || exit
 	echoContent red "\n=============================================================="
-	echoContent green "author:mack-a"
-	echoContent green "Current version: v2.6.10"
-	echoContent green "Github:https://github.com/mack-a/v2ray-agent"
+	echoContent green "Author:Reece"
+	echoContent green "Original author:mack-a"
+	echoContent green "Current version: v2.6.13"
+	echoContent green "Github:https://github.com/reeceyng/v2ray-agent"
 	echoContent green "Description: 8-in-1 coexistence script\c"
 	showInstallStatus
 	echoContent red "\n=============================================================="
-	echoContent red "Promotion Area"
-	echoContent green "AFF donation: https://github.com/mack-a/v2ray-agent/blob/master/documents/donation_aff.md\n"
-	echoContent green "Virtual currency donation: 0xB08b731653515b083deE362fefFc45d5eb96c35d\n"
-	echoContent green "Contact TG for promotion: https://t.me/mackaff"
-	echoContent red "=============================================================="
 	if [[ -n "${coreInstallType}" ]]; then
 		echoContent yellow "1.Reinstall"
 	else

@@ -32,27 +32,27 @@
 
 ## 3.修改godaddy域名的DNS解析
 ### 1.登录cloudflare，添加域名
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/cloudflare.png" width=400>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/cloudflare.png" width=400>
 
 ### 2.选择套餐
 - 如果仅仅只享受科学上网功能，选择free即可
 - 如果需要更好的网络环境、更快的速度，可选择相应的套餐
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/cloudflare_plan.png" width=400>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/cloudflare_plan.png" width=400>
 
 ### 3.根据提示修改godaddy的dns解析
 - cloudflare提示界面
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/cloudflare_dns.png" width=400>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/cloudflare_dns.png" width=400>
 
 - godaddy DNS管理，根据上面的cloudflare提示界面修改为相应的dns
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/godayddy_dns.png" width=400>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/godayddy_dns.png" width=400>
 
 ## 4.增加cloudflare域名解析
 - 添加域名解析(记录)，可以选择二级域名，这样就可以一个月解析到不同的服务器，name填写你要解析的二级域名的host部分，比如ls.example.com 只填写ls即可
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/cloudflare_record_dns.png" width=400>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/cloudflare_record_dns.png" width=400>
 
 ## 5.修改godaddy SSL/TLS
 - 如果vps选择使用https，需要把类型修改为Full
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/cloudflare_tls.png" width=400>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/cloudflare_tls.png" width=400>
 
 # 2.vps配置Nginx、https
 ## 1.安装Nginx
@@ -63,7 +63,7 @@ yum install nginx
 
 - 1.下载配置文件并替换默认文件
 ```
-cd /etc/nginx&&rm -rf /etc/nginx/nginx.conf&&wget https://raw.githubusercontent.com/mack-a/v2ray-agent/master/config/nginx.conf
+cd /etc/nginx&&rm -rf /etc/nginx/nginx.conf&&wget https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/config/nginx.conf
 # 如果缺少wget 则执行下面的命令，然后重复上面的命令
 yum install wget
 ```
@@ -137,7 +137,7 @@ bash <(curl -L -s https://install.direct/go.sh)
 
 - 下载config_ws_tls.json
 ```
-cd&&wget https://raw.githubusercontent.com/mack-a/v2ray-agent/master/config/config_ws_tls.json
+cd&&wget https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/config/config_ws_tls.json
 ```
 
 - 配置文件的id可以自己生成一个新的，替换即可
@@ -155,7 +155,7 @@ cd&&wget https://raw.githubusercontent.com/mack-a/v2ray-agent/master/config/conf
 ## 1.MacOS
 - 下载V2RayU[点我下载](https://github.com/yanue/V2rayU/releases/download/1.4.1/V2rayU.dmg)
 - 下载后打开，服务器设置，修改address即可
-<img src="https://raw.githubusercontent.com/mack-a/v2ray-agent/master/fodder/v2rayU_服务器配置.png" width=400>
+<img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/v2rayU_服务器配置.png" width=400>
 
 - pac设置，添加下面的链接并选择使用Pac模式，即可
 ```
