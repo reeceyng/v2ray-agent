@@ -1419,14 +1419,14 @@ nginxBlog() {
 		read -r -p "Detected installation of fake sites, do you need to reinstall [y/n]:" nginxBlogInstallStatus
 		if [[ "${nginxBlogInstallStatus}" == "y" ]]; then
 			rm -rf /usr/share/nginx/html
-			randomNum=$((RANDOM % 6 + 1))
+			randomNum=$((RANDOM % 9 + 1))
 			wget -q -P /usr/share/nginx https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/blog/unable/html${randomNum}.zip >/dev/null
 			unzip -o /usr/share/nginx/html${randomNum}.zip -d /usr/share/nginx/html >/dev/null
 			rm -f /usr/share/nginx/html${randomNum}.zip*
 			echoContent green " ---> Add fake site successfully"
 		fi
 	else
-		randomNum=$((RANDOM % 6 + 1))
+		randomNum=$((RANDOM % 9 + 1))
 		rm -rf /usr/share/nginx/html
 		wget -q -P /usr/share/nginx https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/blog/unable/html${randomNum}.zip >/dev/null
 		unzip -o /usr/share/nginx/html${randomNum}.zip -d /usr/share/nginx/html >/dev/null
@@ -5434,7 +5434,7 @@ menu() {
 	echoContent red "\n=============================================================="
 	echoContent green "Author:Reece"
 	echoContent green "Original author:mack-a"
-	echoContent green "Current version: v2.6.13"
+	echoContent green "Current version: v2.6.14"
 	echoContent green "Github:https://github.com/reeceyng/v2ray-agent"
 	echoContent green "Description: 8-in-1 coexistence script\c"
 	showInstallStatus
