@@ -126,7 +126,7 @@ initVar() {
 
 	# 1.xray-core安装
 	# 2.v2ray-core 安装
-	# 3.v2ray-core[xtls] 安装
+	# 3.xray-core预览版安装
 	coreInstallType=
 
 	# 核心安装path
@@ -196,6 +196,9 @@ initVar() {
 
 	# 是否为预览版
 	prereleaseStatus=false
+
+	# xtls是否使用vision
+	xtlsRprxVision=
 
 	# ssl类型
 	sslType=
@@ -270,31 +273,30 @@ readInstallType() {
 					# 不带XTLS的v2ray-core
 					coreInstallType=2
 					ctlPath=/etc/v2ray-agent/v2ray/v2ctl
-				elif grep </etc/v2ray-agent/v2ray/conf/02_VLESS_TCP_inbounds.json -q '"security": "xtls"'; then
-					# 带XTLS的v2ray-core
-					ctlPath=/etc/v2ray-agent/v2ray/v2ctl
-					coreInstallType=3
 				fi
 			fi
 		fi
-
-		if [[ -d "/etc/v2ray-agent/xray" && -f "/etc/v2ray-agent/xray/xray" ]]; then
-			# 这里检测xray-core
-			if [[ -d "/etc/v2ray-agent/xray/conf" ]] && [[ -f "/etc/v2ray-agent/xray/conf/02_VLESS_TCP_inbounds.json" || -f "/etc/v2ray-agent/xray/conf/02_trojan_TCP_inbounds.json" ]]; then
-				# xray-core
-				configPath=/etc/v2ray-agent/xray/conf/
-				ctlPath=/etc/v2ray-agent/xray/xray
+    fi
+	
+	if [[ -d "/etc/v2ray-agent/xray" && -f "/etc/v2ray-agent/xray/xray" ]]; then
+		# 这里检测xray-core
+		if [[ -d "/etc/v2ray-agent/xray/conf" ]] && [[ -f "/etc/v2ray-agent/xray/conf/02_VLESS_TCP_inbounds.json" || -f "/etc/v2ray-agent/xray/conf/02_trojan_TCP_inbounds.json" ]]; then
+			# xray-core
+			configPath=/etc/v2ray-agent/xray/conf/
+			ctlPath=/etc/v2ray-agent/xray/xray
+			if grep </etc/v2ray-agent/xray/conf/02_VLESS_TCP_inbounds.json -q '"security": "xtls"'; then
 				coreInstallType=1
+		    elif grep </etc/v2ray-agent/xray/conf/02_VLESS_TCP_inbounds.json -q '"security": "tls"'; then
+				coreInstallType=3
 			fi
 		fi
+	fi
 
-		if [[ -d "/etc/v2ray-agent/hysteria" && -f "/etc/v2ray-agent/hysteria/hysteria" ]]; then
-			# 这里检测 hysteria
-			if [[ -d "/etc/v2ray-agent/hysteria/conf" ]] && [[ -f "/etc/v2ray-agent/hysteria/conf/config.json" ]] && [[ -f "/etc/v2ray-agent/hysteria/conf/client_network.json" ]]; then
-				hysteriaConfigPath=/etc/v2ray-agent/hysteria/conf/
-			fi
+	if [[ -d "/etc/v2ray-agent/hysteria" && -f "/etc/v2ray-agent/hysteria/hysteria" ]]; then
+		# 这里检测 hysteria
+		if [[ -d "/etc/v2ray-agent/hysteria/conf" ]] && [[ -f "/etc/v2ray-agent/hysteria/conf/config.json" ]] && [[ -f "/etc/v2ray-agent/hysteria/conf/client_network.json" ]]; then
+			hysteriaConfigPath=/etc/v2ray-agent/hysteria/conf/
 		fi
-
 	fi
 }
 
@@ -480,8 +482,12 @@ readConfigHostPathUUID() {
 		fi
 
 	fi
-	if [[ "${coreInstallType}" == "1" ]]; then
-		currentHost=$(jq -r .inbounds[0].streamSettings.xtlsSettings.certificates[0].certificateFile ${configPath}${frontingType}.json | awk -F '[t][l][s][/]' '{print $2}' | awk -F '[.][c][r][t]' '{print $1}')
+	if [[ "${coreInstallType}" == "1" || "${coreInstallType}" == "3" ]]; then
+		if [[ "${coreInstallType}" == "3" ]]; then
+			currentHost=$(jq -r .inbounds[0].streamSettings.tlsSettings.certificates[0].certificateFile ${configPath}${frontingType}.json | awk -F '[t][l][s][/]' '{print $2}' | awk -F '[.][c][r][t]' '{print $1}')
+		else
+			currentHost=$(jq -r .inbounds[0].streamSettings.xtlsSettings.certificates[0].certificateFile ${configPath}${frontingType}.json | awk -F '[t][l][s][/]' '{print $2}' | awk -F '[.][c][r][t]' '{print $1}')
+		fi
 		currentUUID=$(jq -r .inbounds[0].settings.clients[0].id ${configPath}${frontingType}.json)
 		currentAdd=$(jq -r .inbounds[0].settings.clients[0].add ${configPath}${frontingType}.json)
 		if [[ "${currentAdd}" == "null" ]]; then
@@ -489,15 +495,9 @@ readConfigHostPathUUID() {
 		fi
 		currentPort=$(jq .inbounds[0].port ${configPath}${frontingType}.json)
 
-	elif [[ "${coreInstallType}" == "2" || "${coreInstallType}" == "3" ]]; then
-		if [[ "${coreInstallType}" == "3" ]]; then
-
-			currentHost=$(jq -r .inbounds[0].streamSettings.xtlsSettings.certificates[0].certificateFile ${configPath}${frontingType}.json | awk -F '[t][l][s][/]' '{print $2}' | awk -F '[.][c][r][t]' '{print $1}')
-		else
-			currentHost=$(jq -r .inbounds[0].streamSettings.tlsSettings.certificates[0].certificateFile ${configPath}${frontingType}.json | awk -F '[t][l][s][/]' '{print $2}' | awk -F '[.][c][r][t]' '{print $1}')
-		fi
+	elif [[ "${coreInstallType}" == "2" ]]; then
+		currentHost=$(jq -r .inbounds[0].streamSettings.tlsSettings.certificates[0].certificateFile ${configPath}${frontingType}.json | awk -F '[t][l][s][/]' '{print $2}' | awk -F '[.][c][r][t]' '{print $1}')
 		currentAdd=$(jq -r .inbounds[0].settings.clients[0].add ${configPath}${frontingType}.json)
-
 		if [[ "${currentAdd}" == "null" ]]; then
 			currentAdd=${currentHost}
 		fi
@@ -1656,7 +1656,7 @@ installXray() {
 
 	if [[ "${coreInstallType}" != "1" ]]; then
 
-		version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | head -1)
+		version=$(curl -s https://api.github.com/repos/XTLS/Xray-core/releases | jq -r ".[]|select (.prerelease==${prereleaseStatus})|.tag_name" | head -1)
 
 		echoContent green " ---> Xray-core版本:${version}"
 		if wget --help | grep -q show-progress; then
@@ -1917,9 +1917,9 @@ updateXray() {
 checkGFWStatue() {
 	readInstallType
 	echoContent skyBlue "\n进度 $1/${totalProgress} : 验证服务启动状态"
-	if [[ "${coreInstallType}" == "1" ]] && [[ -n $(pgrep -f xray/xray) ]]; then
+	if [[ "${coreInstallType}" == "1" || "${coreInstallType}" == "3" ]] && [[ -n $(pgrep -f xray/xray) ]]; then
 		echoContent green " ---> 服务启动成功"
-	elif [[ "${coreInstallType}" == "2" || "${coreInstallType}" == "3" ]] && [[ -n $(pgrep -f v2ray/v2ray) ]]; then
+	elif [[ "${coreInstallType}" == "2" ]] && [[ -n $(pgrep -f v2ray/v2ray) ]]; then
 		echoContent green " ---> 服务启动成功"
 	else
 		echoContent red " ---> 服务启动失败，请检查终端是否有日志打印"
@@ -2701,30 +2701,28 @@ initXrayConfig() {
 	if [[ -n "${currentUUID}" ]]; then
 		read -r -p "读取到上次安装记录，是否使用上次安装时的UUID ？[y/n]:" historyUUIDStatus
 		if [[ "${historyUUIDStatus}" == "y" ]]; then
-			addClientsStatus=true
 			uuid=${currentUUID}
 			echoContent green "\n ---> 使用成功"
 		fi
-	fi
+	else
+		if [[ -z "${uuid}" ]]; then
+			echoContent yellow "请输入自定义UUID[需合法]，[回车]随机UUID"
+			read -r -p 'UUID:' customUUID
 
-	if [[ -z "${uuid}" ]]; then
-		echoContent yellow "请输入自定义UUID[需合法]，[回车]随机UUID"
-		read -r -p 'UUID:' customUUID
+			if [[ -n ${customUUID} ]]; then
+				uuid=${customUUID}
+			else
+				uuid=$(/etc/v2ray-agent/xray/xray uuid)
+			fi
 
-		if [[ -n ${customUUID} ]]; then
-			uuid=${customUUID}
-		else
-			uuid=$(/etc/v2ray-agent/xray/xray uuid)
 		fi
 
-	fi
-
-	if [[ -z "${uuid}" ]]; then
-		addClientsStatus=
-		echoContent red "\n ---> uuid读取错误，重新生成"
-		uuid=$(/etc/v2ray-agent/xray/xray uuid)
-	fi
-
+		if [[ -z "${uuid}" ]]; then
+			addClientsStatus=
+			echoContent red "\n ---> uuid读取错误，重新生成"
+			uuid=$(/etc/v2ray-agent/xray/xray uuid)
+		fi
+    fi
 	echoContent yellow "\n ${uuid}"
 
 	movePreviousConfig
@@ -2785,7 +2783,7 @@ EOF
 {
     "dns": {
         "servers": [
-          "localhost"
+          "8.8.8.8"
         ]
   }
 }
@@ -2985,8 +2983,53 @@ EOF
 	if [[ -n "${customPort}" ]]; then
 		defaultPort=${customPort}
 	fi
-
-	cat <<EOF >/etc/v2ray-agent/xray/conf/02_VLESS_TCP_inbounds.json
+	if [ "$xtlsRprxVision" == true ]; then
+		cat <<EOF >/etc/v2ray-agent/xray/conf/02_VLESS_TCP_inbounds.json
+{
+"inbounds":[
+{
+  "port": ${defaultPort},
+  "protocol": "vless",
+  "tag":"VLESSTCP",
+  "settings": {
+    "clients": [
+     {
+        "id": "${uuid}",
+        "add":"${add}",
+        "flow":"xtls-rprx-vision",
+        "email": "${domain}_${uuid}"
+      }
+    ],
+    "decryption": "none",
+    "fallbacks": [
+        ${fallbacksList}
+    ]
+  },
+  "streamSettings": {
+    "network": "tcp",
+    "security": "tls",
+    "tlsSettings": {
+      "minVersion": "1.2",
+      "alpn": [
+        "http/1.1",
+        "h2"
+      ],
+      "certificates": [
+        {
+          "certificateFile": "/etc/v2ray-agent/tls/${domain}.crt",
+          "keyFile": "/etc/v2ray-agent/tls/${domain}.key",
+          "ocspStapling": 3600,
+          "usage":"encipherment"
+        }
+      ]
+    }
+  }
+}
+]
+}
+EOF
+else
+		cat <<EOF >/etc/v2ray-agent/xray/conf/02_VLESS_TCP_inbounds.json
 {
 "inbounds":[
 {
@@ -3030,6 +3073,7 @@ EOF
 ]
 }
 EOF
+fi
 	addClients "/etc/v2ray-agent/xray/conf/02_VLESS_TCP_inbounds.json" "${addClientsStatus}"
 }
 
@@ -3136,7 +3180,7 @@ EOF
 			echoContent yellow " ---> 二维码 VLESS(VLESS+TCP+TLS/xtls-rprx-splice)"
 			echoContent green "    https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=vless%3A%2F%2F${id}%40${currentHost}%3A${currentDefaultPort}%3Fencryption%3Dnone%26security%3Dxtls%26type%3Dtcp%26${currentHost}%3D${currentHost}%26headerType%3Dnone%26sni%3D${currentHost}%26flow%3Dxtls-rprx-splice%23${email/direct/splice}\n"
 
-		elif [[ "${coreInstallType}" == 2 || "${coreInstallType}" == "3" ]]; then
+		elif [[ "${coreInstallType}" == 2 ]]; then
 			echoContent yellow " ---> 通用格式(VLESS+TCP+TLS)"
 			echoContent green "    vless://${id}@${currentHost}:${currentDefaultPort}?security=tls&encryption=none&host=${currentHost}&headerType=none&type=tcp#${email}\n"
 
@@ -3148,6 +3192,19 @@ vless://${id}@${currentHost}:${currentDefaultPort}?security=tls&encryption=none&
 EOF
 			echoContent yellow " ---> 二维码 VLESS(VLESS+TCP+TLS)"
 			echoContent green "    https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=vless%3a%2f%2f${id}%40${currentHost}%3a${currentDefaultPort}%3fsecurity%3dtls%26encryption%3dnone%26host%3d${currentHost}%26headerType%3dnone%26type%3dtcp%23${email}\n"
+		
+		elif [[ "${coreInstallType}" == 3 ]] && echo "${currentInstallProtocolType}" | grep -q 0; then
+			echoContent yellow " ---> 通用格式(VLESS+TCP+TLS/xtls-rprx-vision)"
+			echoContent green "    vless://${id}@${currentHost}:${currentDefaultPort}?encryption=none&security=tls&type=tcp&host=${currentHost}&headerType=none&sni=${currentHost}&flow=xtls-rprx-vision#${email/direct/splice}\n"
+
+			echoContent yellow " ---> 格式化明文(VLESS+TCP+TLS/xtls-rprx-vision)"
+			echoContent green "    协议类型:VLESS，地址:${currentHost}，端口:${currentDefaultPort}，用户ID:${id}，安全:tls，传输方式:tcp，flow:xtls-rprx-vision，账户名:${email/direct/splice}\n"
+
+			cat <<EOF >>"/etc/v2ray-agent/subscribe_tmp/${subAccount}"
+vless://${id}@${currentHost}:${currentDefaultPort}?security=tls&encryption=none&host=${currentHost}&headerType=none&type=tcp#${email}
+EOF
+			echoContent yellow " ---> 二维码 VLESS(VLESS+TCP+TLS)"
+			echoContent green "    https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=vless%3A%2F%2F${id}%40${currentHost}%3A${currentDefaultPort}%3Fencryption%3Dnone%26security%3Dtls%26type%3Dtcp%26${currentHost}%3D${currentHost}%26headerType%3Dnone%26sni%3D${currentHost}%26flow%3Dxtls-rprx-vision%23${email/direct/splice}\n"
 		fi
 
 	elif [[ "${type}" == "trojanTCPXTLS" ]]; then
@@ -3291,7 +3348,7 @@ showAccounts() {
 			done
 
 		else
-			echoContent skyBlue "===================== VLESS TCP TLS/XTLS-direct/XTLS-splice ======================\n"
+			echoContent skyBlue "================ VLESS TCP TLS/XTLS-direct/XTLS-splice/XTLS-vision ================\n"
 			jq .inbounds[0].settings.clients ${configPath}02_VLESS_TCP_inbounds.json | jq -c '.[]' | while read -r user; do
 				local email=
 				email=$(echo "${user}" | jq -r .email)
@@ -5136,6 +5193,7 @@ selectCoreInstall() {
 	echoContent red "\n=============================================================="
 	echoContent yellow "1.Xray-core"
 	echoContent yellow "2.v2ray-core"
+    echoContent yellow "3.Xray-core预览版(tcp默认使用xtls-rprx-vision)"
 	echoContent red "=============================================================="
 	read -r -p "请选择:" selectCoreType
 	case ${selectCoreType} in
@@ -5155,11 +5213,12 @@ selectCoreInstall() {
 		fi
 		;;
 	3)
-		v2rayCoreVersion=v4.32.1
+		prereleaseStatus=true
+		xtlsRprxVision=true
 		if [[ "${selectInstallType}" == "2" ]]; then
-			customV2RayInstall
+			customXrayInstall
 		else
-			v2rayCoreInstall
+			xrayCoreInstall
 		fi
 		;;
 	*)
@@ -5433,7 +5492,7 @@ menu() {
 	echoContent red "\n=============================================================="
 	echoContent green "作者:Reece"
 	echoContent green "原作者:mack-a"
-	echoContent green "当前版本:v2.6.14"
+	echoContent green "当前版本:v2.6.15"
 	echoContent green "Github:https://github.com/reeceyng/v2ray-agent"
 	echoContent green "描述:八合一共存脚本\c"
 	showInstallStatus
