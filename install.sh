@@ -2704,25 +2704,22 @@ initXrayConfig() {
 		if [[ "${historyUUIDStatus}" == "y" ]]; then
 			uuid=${currentUUID}
 			echoContent green "\n ---> 使用成功"
-		fi
-	else
-		if [[ -z "${uuid}" ]]; then
-			echoContent yellow "请输入自定义UUID[需合法]，[回车]随机UUID"
-			read -r -p 'UUID:' customUUID
-
-			if [[ -n ${customUUID} ]]; then
-				uuid=${customUUID}
-			else
-				uuid=$(/etc/v2ray-agent/xray/xray uuid)
+			if [[ -z "${uuid}" ]]; then
+				echoContent red "\n ---> uuid读取错误，重新生成"
 			fi
-
-		fi
-
-		if [[ -z "${uuid}" ]]; then
-			echoContent red "\n ---> uuid读取错误，重新生成"
-			uuid=$(/etc/v2ray-agent/xray/xray uuid)
 		fi
     fi
+
+	if [[ -z "${uuid}" ]]; then
+		echoContent yellow "请输入自定义UUID[需合法]，[回车]随机UUID"
+		read -r -p 'UUID:' customUUID
+		if [[ -n ${customUUID} ]]; then
+			uuid=${customUUID}
+		else
+			uuid=$(/etc/v2ray-agent/xray/xray uuid)
+		fi
+	fi
+		
 	echoContent yellow "\n ${uuid}"
 
 	movePreviousConfig

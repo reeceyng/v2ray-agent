@@ -1,6 +1,3 @@
-# 原作者：mack-a
-# 原项目地址： https://github.com/mack-a/v2ray-agent
-
 # v2ray-agent
 
 > [English Version](https://github.com/reeceyng/v2ray-agent/blob/master/documents/en/README_EN.md)
@@ -95,7 +92,6 @@ wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/reece
 ```
 
 - Development Version【开发版】
-- 支持xtls-rprx-vision
 
 ```
 wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/reeceyng/v2ray-agent/dev/install.sh" && chmod 700 /root/install.sh && /root/install.sh
@@ -104,6 +100,12 @@ wget -P /root -N --no-check-certificate "https://raw.githubusercontent.com/reece
 # 示例图
 
 <img src="https://raw.githubusercontent.com/reeceyng/v2ray-agent/master/fodder/install/install.jpg" width=700>
+
+# 版权
+
+- 八合一脚本原作者：[mack-a](https://github.com/mack-a)
+- [Reece](https://github.com/reeceyng)
+- 以及本项目的所有贡献者
 
 # 许可证
 
