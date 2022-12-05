@@ -1253,7 +1253,7 @@ acmeInstallSSL() {
 }
 # 自定义端口
 customPortFunction() {
-	local historyCustomPortStatus=
+	local historyCustomPortStatus="n"
 	local showPort=
 	if [[ -n "${customPort}" || -n "${currentPort}" ]]; then
 		echo
@@ -1267,7 +1267,7 @@ customPortFunction() {
 		fi
 	fi
 
-	if [[ "${historyCustomPortStatus}" == "n" ]] && [[ -z "${customPort}" && -z "${currentPort}" ]]; then
+	if [[ "${historyCustomPortStatus}" == "n" ]]; then
 		echo
 		echoContent yellow "请输入端口[默认: 443]，如自定义端口，只允许使用DNS申请证书[回车使用默认]"
 		read -r -p "端口:" customPort
@@ -5502,7 +5502,7 @@ menu() {
 	echoContent red "\n=============================================================="
 	echoContent green "作者:Reece"
 	echoContent green "原作者:mack-a"
-	echoContent green "当前版本:v2.7.0"
+	echoContent green "当前版本:v2.7.1"
 	echoContent green "Github:https://github.com/reeceyng/v2ray-agent"
 	echoContent green "描述:八合一共存脚本\c"
 	showInstallStatus
