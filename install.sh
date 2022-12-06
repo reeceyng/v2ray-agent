@@ -346,7 +346,11 @@ checkBTPanel() {
 readInstallAlpn() {
 	if [[ -n ${currentInstallProtocolType} ]]; then
 		local alpn
-		alpn=$(jq -r .inbounds[0].streamSettings.xtlsSettings.alpn[0] ${configPath}${frontingType}.json)
+		if [[ "${coreInstallType}" == "1" ]]; then
+			alpn=$(jq -r .inbounds[0].streamSettings.xtlsSettings.alpn[0] ${configPath}${frontingType}.json)
+		else
+			alpn=$(jq -r .inbounds[0].streamSettings.tlsSettings.alpn[0] ${configPath}${frontingType}.json)
+		fi
 		if [[ -n ${alpn} ]]; then
 			currentAlpn=${alpn}
 		fi
@@ -5450,12 +5454,20 @@ switchAlpn() {
 	if [[ "${selectSwitchAlpnType}" == "1" && "${currentAlpn}" == "http/1.1" ]]; then
 
 		local frontingTypeJSON
-		frontingTypeJSON=$(jq -r ".inbounds[0].streamSettings.xtlsSettings.alpn = [\"h2\",\"http/1.1\"]" ${configPath}${frontingType}.json)
+		if [[ "${coreInstallType}" == "1" ]]; then
+			frontingTypeJSON=$(jq -r ".inbounds[0].streamSettings.xtlsSettings.alpn = [\"h2\",\"http/1.1\"]" ${configPath}${frontingType}.json)
+		else
+		    frontingTypeJSON=$(jq -r ".inbounds[0].streamSettings.tlsSettings.alpn = [\"h2\",\"http/1.1\"]" ${configPath}${frontingType}.json)
+		fi
 		echo "${frontingTypeJSON}" | jq . >${configPath}${frontingType}.json
 
 	elif [[ "${selectSwitchAlpnType}" == "1" && "${currentAlpn}" == "h2" ]]; then
 		local frontingTypeJSON
-		frontingTypeJSON=$(jq -r ".inbounds[0].streamSettings.xtlsSettings.alpn =[\"http/1.1\",\"h2\"]" ${configPath}${frontingType}.json)
+		if [[ "${coreInstallType}" == "1" ]]; then
+			frontingTypeJSON=$(jq -r ".inbounds[0].streamSettings.xtlsSettings.alpn =[\"http/1.1\",\"h2\"]" ${configPath}${frontingType}.json)
+		else
+		    frontingTypeJSON=$(jq -r ".inbounds[0].streamSettings.tlsSettings.alpn =[\"http/1.1\",\"h2\"]" ${configPath}${frontingType}.json)
+		fi
 		echo "${frontingTypeJSON}" | jq . >${configPath}${frontingType}.json
 	else
 		echoContent red " ---> 选择错误"
@@ -5499,7 +5511,7 @@ menu() {
 	echoContent red "\n=============================================================="
 	echoContent green "作者:Reece"
 	echoContent green "原作者:mack-a"
-	echoContent green "当前版本:v2.7.1"
+	echoContent green "当前版本:v2.7.2"
 	echoContent green "Github:https://github.com/reeceyng/v2ray-agent"
 	echoContent green "描述:八合一共存脚本\c"
 	showInstallStatus
