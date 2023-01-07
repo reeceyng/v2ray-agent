@@ -3202,7 +3202,7 @@ EOF
 			echoContent green "    协议类型:VLESS，地址:${currentHost}，端口:${currentDefaultPort}，用户ID:${id}，安全:tls，传输方式:tcp，flow:xtls-rprx-vision，账户名:${email/direct/splice}\n"
 
 			cat <<EOF >>"/etc/v2ray-agent/subscribe_tmp/${subAccount}"
-vless://${id}@${currentHost}:${currentDefaultPort}?security=tls&encryption=none&host=${currentHost}&headerType=none&type=tcp#${email}
+vless://${id}@${currentHost}:${currentDefaultPort}?security=tls&encryption=none&host=${currentHost}&headerType=none&type=tcp&sni=${currentHost}&flow=xtls-rprx-vision#${email}
 EOF
 			echoContent yellow " ---> 二维码 VLESS(VLESS+TCP+TLS)"
 			echoContent green "    https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=vless%3A%2F%2F${id}%40${currentHost}%3A${currentDefaultPort}%3Fencryption%3Dnone%26security%3Dtls%26type%3Dtcp%26${currentHost}%3D${currentHost}%26headerType%3Dnone%26sni%3D${currentHost}%26flow%3Dxtls-rprx-vision%23${email/direct/splice}\n"
