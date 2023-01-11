@@ -5208,7 +5208,7 @@ selectCoreInstall() {
 	echoContent red "\n=============================================================="
 	echoContent yellow "1.Xray-core"
 	echoContent yellow "2.v2ray-core"
-    echoContent yellow "3.Xray-core预览版(tcp默认使用xtls-rprx-vision)"
+    echoContent yellow "3.Xray-core(使用xtls-rprx-vision)"
 	echoContent red "=============================================================="
 	read -r -p "请选择:" selectCoreType
 	case ${selectCoreType} in
@@ -5228,7 +5228,6 @@ selectCoreInstall() {
 		fi
 		;;
 	3)
-		prereleaseStatus=true
 		xtlsRprxVision=true
 		if [[ "${selectInstallType}" == "2" ]]; then
 			customXrayInstall
