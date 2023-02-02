@@ -3898,6 +3898,10 @@ addUser() {
 			users="{\"id\":\"${uuid}\",\"email\":\"${email}\",\"alterId\":0}"
 		fi
 
+		if [[ "${coreInstallType}" == "3" ]]; then
+			users="{\"id\":\"${uuid}\",\"flow\":\"xtls-rprx-vision\",\"email\":\"${email}\",\"alterId\":0}"
+		fi
+
 		if echo ${currentInstallProtocolType} | grep -q 0; then
 			local vlessUsers="${users//\,\"alterId\":0/}"
 
